@@ -1,0 +1,5 @@
+fixtures:
+    symlinks:
+      repl: "#{source_dir}"
+    repositories:
+      
