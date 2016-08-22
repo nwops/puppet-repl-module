@@ -153,6 +153,7 @@ PLATFORMS
 DEPENDENCIES
   guard-rake
   metadata-json-lint
+  pry
   puppet (~> 4.3)
   puppet-blacksmith
   puppet-lint

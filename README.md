@@ -11,14 +11,24 @@ allow you to poke around to see variables, functions, facts, classes, and resour
 
 ## Requirements
 Ensure you have installed the puppet-repl gem `gem install puppet-repl`
-or place this in your Gemfile `gem 'puppet-repl', '>= 0.1'`
+or place this in your Gemfile `gem 'puppet-repl', '>= 0.3'` for your puppet module.
 
 This also requires puppet 3.8+ with future parser enabled.
+
+You will also want to include this module in your fixtures file if using for rspec-puppet
+unit testing.
+
+```
+repl:
+   repo: https://github.com/nwops/puppet-repl-module
+```
 
 ## Usage
 **DO NOT RUN THIS ON YOUR PUPPET SERVER OR IN PRODUCTION**
 
 Planes will fall out of the sky, and kittens will die.  Do you really want that?
+Although there is a safety mechanism to prevent the this function from being called
+under a daemonized puppet run.  
 
 In order to start the puppet-repl from within code just place the `start_repl()`
 function inside your manifest code where you want the scope to be injected.
@@ -59,6 +69,7 @@ Example Repl session when inside the each block.  Notice the item variable.
 
 If using with rspec-puppet, only the facts you define in your test suite will be present in the repl.
 
+For more information on how to use the puppet repl please refer to the [documentation](https://github.com/nwops/puppet-repl)
 ## Troubleshooting
 This module and puppet-repl gem are very new, there will be bugs.  Please
 file them at [puppet-repl gem](https://github.com/nwops/puppet-repl/issues).
