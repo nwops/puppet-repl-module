@@ -15,7 +15,12 @@ Puppet::Functions.create_function(:start_repl, Puppet::Functions::InternalFuncti
   def start_repl(scope, options = {})
     if $stdout.isatty
       options = options.merge({:scope => scope})
-      ::PuppetRepl::Cli.start(options)
+      # forking the process allows us to start a new repl shell
+      # for each occurrence of the start_repl function
+      pid = fork do
+        ::PuppetRepl::Cli.start(options)
+      end
+      Process.wait(pid)
     else
      Puppet.warning 'start_repl(): refusing to start the debugger on a daemonized master'
     end
