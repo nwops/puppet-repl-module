@@ -12,4 +12,8 @@ class repl::repl_test(
     file{"/tmp/${item}": ensure => present}
     start_repl()
   }
+
+  if $var1 == 'value1' {
+    start_repl()
+  }
 }
