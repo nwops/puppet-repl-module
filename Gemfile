@@ -8,7 +8,7 @@ group :test do
     gem "metadata-json-lint"
     gem 'puppet-syntax'
     gem 'puppet-lint'
-    gem 'puppet-repl', '>= 0.3'
+    gem 'puppet-repl', :git => 'https://github.com/nwops/puppet-repl.git'
 end
 
 group :development do
