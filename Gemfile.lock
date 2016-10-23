@@ -1,8 +1,8 @@
 GIT
-  remote: https://github.com/nwops/puppet-repl.git
-  revision: 9eb78c195203ccb58184af7cd4b1ee27862e86e8
+  remote: https://github.com/nwops/puppet-repl
+  revision: 422b644e3d5dfd9cc521fbda5313ad8224d9e225
   specs:
-    puppet-repl (0.3.2)
+    puppet-repl (0.3.3)
       awesome_print (~> 1.6)
       facterdb (~> 0.3)
       puppet (>= 3.8)

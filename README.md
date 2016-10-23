@@ -32,38 +32,58 @@ under a daemonized puppet run.
 
 In order to start the puppet-repl from within code just place the `start_repl()`
 function inside your manifest code where you want the scope to be injected.
+This will automatically call the repl `whereami` command and show where in the code
+the `start_repl()` function was called from.  This makes it obvious where in the code
+you are evaulating from.  This gives you the ability to step through your codce.  To goto 
+the next iteration just use the `exit` command and the compiler will continue to compile where it previously left of. 
 
 Example:
 
 ```puppet
-# dummy resources so we can show list of resources
-file{'/tmp/test.txt': ensure => present, mode => '0755'}
-service{'httpd': ensure => running}
+class repl::repl_test(
+  $var1 = 'value1',
+  $var2 = ['value1', 'value2', 'value3']
+)
+{
+  # dummy resources so we can show list of resources
+  file{'/tmp/test.txt': ensure => present, mode => '0755'}
+  service{'httpd': ensure => running}
 
-# how to find values with an empheral scope
-$var2.each | String $item | {
-  file{"/tmp/${item}": ensure => present}
-  start_repl()
+  # how to find values with an empheral scope
+  $var2.each | String $item | {
+    file{"/tmp/${item}": ensure => present}
+    start_repl({'run_once' => true})
+  }
+  start_repl({'run_once' => true})
+  if $var1 == 'value1' {
+    start_repl({'run_once' => true})
+  }
 }
 ```
 
 Example Repl session when inside the each block.  Notice the item variable.
+
 ```ruby
->> vars
-"Facts were removed for easier viewing"
-{
- "caller_module_name" => "",
- "item"               => "value1",
- "module_name"        => "repl",
- "name"               => "repl::repl_test",
- "title"              => "repl::repl_test",
- "var1"               => "value1",
- "var2"               => [
-  [0] "value1",
-  [1] "value2",
-  [2] "value3"
- ]
-}
+Ruby Version: 2.3.1
+Puppet Version: 4.7.0
+Puppet Repl Version: 0.3.3
+Created by: NWOps <corey@nwops.io>
+Type "exit", "functions", "vars", "krt", "whereami", "facts", "resources", "classes",
+     "play", "classification", "reset", or "help" for more information.
+
+          8:   service{'httpd': ensure => running}
+          9:
+         10:   # how to find values with an empheral scope
+         11:   $var2.each | String $item | {
+         12:     file{"/tmp/${item}": ensure => present}
+      => 13:     start_repl({'run_once' => false})
+         14:   }
+         15:   start_repl({'run_once' => false})
+         16:   if $var1 == 'value1' {
+         17:     start_repl({'run_once' => false})
+         18:   }
+1:>> $item
+ => "value1"
 >>
 ```
 

@@ -1,7 +1,10 @@
 begin
   require 'puppet-repl'
+  if ::PuppetRepl::VERSION >= '0.3.3'
+    Puppet.err('You must install the puppet-repl gem version >= 0.3.3')
+  end
 rescue LoadError => e
-    Puppet.err('You must install the puppet-repl gem')
+  Puppet.err('You must install the puppet-repl: gem install puppet-repl')
 end
 
 Puppet::Functions.create_function(:start_repl, Puppet::Functions::InternalFunction) do
@@ -24,11 +27,14 @@ Puppet::Functions.create_function(:start_repl, Puppet::Functions::InternalFuncti
       # forking the process allows us to start a new repl shell
       # for each occurrence of the start_repl function
       pid = fork do
-        # suppress future repl help screens
-        @repl_stack_count = @repl_stack_count + 1
+
         # required in order to use convert puppet hash into ruby hash with symbols
         options = options.inject({}){|data,(k,v)| data[k.to_sym] = v; data}
         options[:source_file], options[:source_line] = stacktrace.last
+        # suppress future repl help screens
+        @repl_stack_count = @repl_stack_count + 1
+        # suppress future repl help screens since we probably started from the repl
+        @repl_stack_count = @repl_stack_count + 1 if options[:source_file] =~ /puppet_repl_input/
         options[:quiet] = true if @repl_stack_count > 1
         ::PuppetRepl::Cli.start_without_stdin(options)
       end

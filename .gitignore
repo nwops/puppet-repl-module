@@ -1,4 +1,5 @@
 .*.sw?
+.puppet_repl_input
 pkg
 spec/fixtures
 .rspec_system
