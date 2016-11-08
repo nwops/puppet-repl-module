@@ -9,6 +9,8 @@ The function is used for starting the puppet repl from inside the puppet code.
 The function will inject the scope, node and environment data into the repl and will
 allow you to poke around to see variables, functions, facts, classes, and resources defined in the current scope.
 
+*NOTICE*: This module has been deprecated by the nwops/debug module, Please see https://github.com/nwops/puppet-debug
+
 ## Requirements
 Ensure you have installed the puppet-repl gem `gem install puppet-repl`
 or place this in your Gemfile `gem 'puppet-repl', '>= 0.3'` for your puppet module.
